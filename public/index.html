@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Spotify</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .track {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .track img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+        }
+
+        .track-info {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>My Spotify</h1>
+
+    <h2>Top Tracks — Last 4 Weeks</h2>
+
+    <div id="tracks">
+        Loading...
+    </div>
+
+    <script>
+        async function loadTracks() {
+            const response = await fetch("/api/top-tracks");
+            const tracks = await response.json();
+
+            const container = document.getElementById("tracks");
+
+            container.innerHTML = "";
+
+            tracks.forEach((track, index) => {
+                const element = document.createElement("div");
+
+                element.className = "track";
+
+                element.innerHTML = `
+                    <strong>${index + 1}</strong>
+
+                    <img src="${track.image}" />
+
+                    <div class="track-info">
+                        <strong>${track.name}</strong>
+                        <span>${track.artist}</span>
+                        <small>${track.album}</small>
+                    </div>
+                `;
+
+                container.appendChild(element);
+            });
+        }
+
+        loadTracks();
+    </script>
+
+</body>
+</html>
